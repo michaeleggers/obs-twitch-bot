@@ -14,3 +14,13 @@ You would have to call a Windows/MacOS equivalent here:
 const SOUND_COMMAND = `paplay --volume=${VOLUME * 65536} ./sounds/chimes.flac`;
 ```
 
+## Get it running
+- Install all the packages via npm.
+- Create your own env-file with obs-password, obs-ip and twitch-username:
+
+```bash
+mv .env-cmdrc.example .env-cmdrc
+```
+
+- Run `npm run start`.
+
