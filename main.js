@@ -5,12 +5,17 @@ import { exit } from 'process';
 
 const obs = new OBSWebSocket();
 
-let VOLUME = 0.5; // Set the loudness here. 0.0 = muted, 1.0 = full loudness.
-const COUNTER = 5; // Set after how many messages from a user the sound plays.
+let volumeArgs = process.argv[2];
+let counterArgs = process.argv[3];
+
+let VOLUME = volumeArgs|| 0.5; // Set the loudness here. 0.0 = muted, 1.0 = full loudness.
+const COUNTER = counterArgs || 5; // Set after how many messages from a user the sound plays.
 
 // Clamp loudness between 0, 1
 VOLUME = Math.max(0.0, Math.min(VOLUME, 1.0));
 console.log("Volume set to: ", VOLUME);
+
+console.log("Counter set to: ", COUNTER);
 
 // === USER COUNTERS ===
 const USER_COUNTERS = new Map();
