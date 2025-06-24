@@ -1,0 +1,23 @@
+{
+  "name": "obs-twitch-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "env-cmd -e production nodemon main.js",
+    "start": "env-cmd -e production node main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "env-cmd": "^10.1.0",
+    "obs-websocket-js": "^5.0.6",
+    "tmi.js": "^1.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
