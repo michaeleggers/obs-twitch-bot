@@ -3,8 +3,7 @@
 It plays a sound when a message comes in. You can configure the interval
 at which a sound is being played for a user via the `COUNTER` variable.
 
-The volume of the sound is being controlled via a double (yeah, in JS
-everything is a double, cringe.) called `VOLUME`, between 0.0 (muted)
+The volume of the sound is being controlled via a numeric value called `VOLUME`, between 0.0 (muted)
 and 1.0 (full loudness).
 
 As this was made on Linux `paplay` is called to play the sound.
