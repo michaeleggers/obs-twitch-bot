@@ -2,6 +2,7 @@ import OBSWebSocket from 'obs-websocket-js';
 import tmi from 'tmi.js';
 import { exec } from 'child_process';
 import { exit } from 'process';
+import express from 'express';
 
 const obs = new OBSWebSocket();
 
@@ -26,6 +27,8 @@ const OBS_ADDRESS = process.env.OBS_ADDRESS;
 const TWITCH_CHANNEL = process.env.TWITCH_CHANNEL; // lowercase, no @
 const SOUND_COMMAND = `paplay --volume=${VOLUME * 65536} ./sounds/chimes.flac`;
 
+const OPENGL_PLAYER_IP   = "0.0.0.0"; // Only localhost possible atm.
+const OPENGL_PLAYER_PORT = 8081;
 
 // === Connect to OBS ===
 async function connectOBS() {
@@ -45,7 +48,7 @@ const client = new tmi.Client({
 });
 client.connect();
 
-client.on('message', (channel, tags, message, self) => {
+client.on('message', async (channel, tags, message, self)  => {
     //if (self) return; // Ignore own messages
 
     const displayName = tags['display-name'];
@@ -64,10 +67,18 @@ client.on('message', (channel, tags, message, self) => {
     //console.log(`DEBUG: Usercounter for ${displayName} is ${counter}`);
   
     if (counter >= COUNTER) {
-      //Play sound
-      exec(SOUND_COMMAND, (err) => {
-        if (err) console.error('Sound error:', err);
-      });
+        //Play sound
+        exec(SOUND_COMMAND, (err) => {
+          if (err) console.error('Sound error:', err);
+
+        });
+
+        // Send opengl-player request:
+        try {
+          let res = await fetch(`http://${OPENGL_PLAYER_IP}:${OPENGL_PLAYER_PORT}`);
+        } catch(err) {
+          console.log(`Failed to send request to opengl-player. Error: ${err}`);
+        }
 
         // Reset counter
         USER_COUNTERS.set(displayName, 0);
