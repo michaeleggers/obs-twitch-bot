@@ -3,6 +3,8 @@ import tmi from 'tmi.js';
 import { exec } from 'child_process';
 import { exit } from 'process';
 import express from 'express';
+import axios from 'axios';
+import request from 'request';
 
 const obs = new OBSWebSocket();
 
@@ -70,15 +72,56 @@ client.on('message', async (channel, tags, message, self)  => {
         //Play sound
         exec(SOUND_COMMAND, (err) => {
           if (err) console.error('Sound error:', err);
-
         });
 
         // Send opengl-player request:
-        try {
-          let res = await fetch(`http://${OPENGL_PLAYER_IP}:${OPENGL_PLAYER_PORT}`);
-        } catch(err) {
-          console.log(`Failed to send request to opengl-player. Error: ${err}`);
-        }
+        //try {
+        //  let res = await fetch(`http://${OPENGL_PLAYER_IP}:${OPENGL_PLAYER_PORT}`);
+        //  //console.log(`Sent message to opengl-player. Received:`);
+
+        //  //const headerDate = res.headers && res.headers.get('date') ? res.headers.get('date') : 'no response date';
+        //  //console.log('Status Code:', res.status);
+        //  //console.log('Date in Response header:', headerDate);
+
+        //  const data = await res.json();
+        //  //console.log(data);
+        //} catch(err) {
+        //  console.log(`Failed getting response from opengl-player.`);
+        //  console.log(`Error: ${err}`)
+        //}
+    //
+    const client = axios.create({
+  responseType: "json",
+  headers: {
+    Accept: "application/json",
+  }
+});
+
+client.get(`http://${OPENGL_PLAYER_IP}:${OPENGL_PLAYER_PORT}/`)
+  .then(res => {
+        //console.log(res);
+    //const headerdate = res.headers && res.headers.date ? res.headers.date : 'no response date';
+    //console.log('Status Code:', res.status);
+    //console.log('Date in Response header:', headerDate);
+
+    //const msg  = res.data;
+    //console.log(msg);
+        const obj = res.data;
+        console.log(obj.message);
+
+  })
+  .catch(err => {
+    console.log('Error-Msg: ', err.message);
+    //console.log('Full Error-Obj: ', err);
+  });
+    //
+   
+    
+//request('http://localhost:8081/', function (error, response, body) {
+//  console.error('error:', error); // Print the error if one occurred
+//  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+//  console.log('body:', body); // Print the HTML for the Google homepage.
+//});
 
         // Reset counter
         USER_COUNTERS.set(displayName, 0);
