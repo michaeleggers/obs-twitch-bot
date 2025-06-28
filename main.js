@@ -38,7 +38,7 @@ async function connectOBS() {
     await obs.connect(OBS_ADDRESS, OBS_PASSWORD);
     console.log('🐼 Connected to OBS WebSocket');
   } catch (err) {
-    console.error('❌ OBS connection error:', err);
+    console.error(`❌ OBS connection error: ${err}`);
     exit(666);
   }
 }
