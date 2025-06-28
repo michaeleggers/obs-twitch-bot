@@ -36,7 +36,7 @@ const OPENGL_PLAYER_PORT = 8081;
 async function connectOBS() {
   try {
     await obs.connect(OBS_ADDRESS, OBS_PASSWORD);
-    console.log('🐼 Connected to OBS WebSocket');
+    console.log('🦭 Connected to OBS WebSocket');
   } catch (err) {
     console.error(`❌ OBS connection error: ${err}`);
     exit(666);
