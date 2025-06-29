@@ -36,6 +36,26 @@ const OPENGL_PLAYER_PORT = 8081;
 console.log(`Active environment: ${process.env.NODE_ENV}`);
 
 
+const SendRequest = async (address) => {
+  const client = axios.create({
+    responseType: "json",
+    headers: {
+      Accept: "application/json",
+    }
+  });
+
+  try {
+    const res = await client.get(address);
+    return res;
+  }
+  catch {
+    err => {
+      console.log('Error-Msg: ', err.message);
+      return err;
+    }
+  };
+}
+
 if (process.env.NODE_ENV === 'dev-mock') {
   const PORT = 6060;
   const app = express();
@@ -108,30 +128,9 @@ else {
       //  console.log(`Error: ${err}`)
       //}
       //
-      const client = axios.create({
-        responseType: "json",
-        headers: {
-          Accept: "application/json",
-        }
-      });
-
-      client.get(`http://${OPENGL_PLAYER_IP}:${OPENGL_PLAYER_PORT}/`)
-        .then(res => {
-          //console.log(res);
-          //const headerdate = res.headers && res.headers.date ? res.headers.date : 'no response date';
-          //console.log('Status Code:', res.status);
-          //console.log('Date in Response header:', headerDate);
-
-          //const msg  = res.data;
-          //console.log(msg);
-          const obj = res.data;
-          console.log(obj.message);
-
-        })
-        .catch(err => {
-          console.log('Error-Msg: ', err.message);
-          //console.log('Full Error-Obj: ', err);
-        });
+      //
+      const glPlayerResponse = await SendRequest(`http://${OPENGL_PLAYER_IP}:${OPENGL_PLAYER_PORT}/`);
+      console.log(glPlayerResponse.data);
       //
 
 
