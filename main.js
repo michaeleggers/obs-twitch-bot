@@ -59,9 +59,16 @@ const SendRequest = async (address) => {
 if (process.env.NODE_ENV === 'dev-mock') {
   const PORT = 6060;
   const app = express();
-  app.get('/', (req, res) => {
-    console.log(req);
-    res.send('Hi there.');
+  app.get('/', async (req, res) => {
+    //console.log(req);
+    //Play sound
+    exec(SOUND_COMMAND, (err) => {
+      if (err) console.error('Sound error:', err);
+    });
+
+    // Send request to OpenGL Server and return its response to client.
+    const glPlayerResponse = await SendRequest(`http://${OPENGL_PLAYER_IP}:${OPENGL_PLAYER_PORT}/`);
+    res.send(`Data received from opengl-server: ${JSON.stringify(glPlayerResponse.data)}`);
   });
 
   app.listen(PORT, 'localhost', () => {
