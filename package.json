@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "env-cmd -e production nodemon main.js",
+    "dev-mock": "env-cmd -e dev-mock nodemon main.js",
     "start": "env-cmd -e production node main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
