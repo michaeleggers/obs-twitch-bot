@@ -67,8 +67,13 @@ if (process.env.NODE_ENV === 'dev-mock') {
     });
 
     // Send request to OpenGL Server and return its response to client.
-    const glPlayerResponse = await SendRequest(`http://${OPENGL_PLAYER_IP}:${OPENGL_PLAYER_PORT}/`);
-    res.send(`Data received from opengl-server: ${JSON.stringify(glPlayerResponse.data)}`);
+    try {
+      const glPlayerResponse = await SendRequest(`http://${OPENGL_PLAYER_IP}:${OPENGL_PLAYER_PORT}/`);
+      return res.send(`Data received from opengl-server: ${JSON.stringify(glPlayerResponse.data)}`);
+    }
+    catch (err) {
+      console.log(`Failed to get a response from opengl-server. Error: ${err}`);
+    }
   });
 
   app.listen(PORT, 'localhost', () => {
@@ -119,33 +124,15 @@ else {
         if (err) console.error('Sound error:', err);
       });
 
-      // Send opengl-player request:
-      //try {
-      //  let res = await fetch(`http://${OPENGL_PLAYER_IP}:${OPENGL_PLAYER_PORT}`);
-      //  //console.log(`Sent message to opengl-player. Received:`);
+      // Send request to OpenGL Server and return its response to client.
+      try {
+        const glPlayerResponse = await SendRequest(`http://${OPENGL_PLAYER_IP}:${OPENGL_PLAYER_PORT}/`);
+        return res.send(`Data received from opengl-server: ${JSON.stringify(glPlayerResponse.data)}`);
+      }
+      catch (err) {
+        console.log(`Failed to get a response from opengl-server. Error: ${err}`);
+      }
 
-      //  //const headerDate = res.headers && res.headers.get('date') ? res.headers.get('date') : 'no response date';
-      //  //console.log('Status Code:', res.status);
-      //  //console.log('Date in Response header:', headerDate);
-
-      //  const data = await res.json();
-      //  //console.log(data);
-      //} catch(err) {
-      //  console.log(`Failed getting response from opengl-player.`);
-      //  console.log(`Error: ${err}`)
-      //}
-      //
-      //
-      const glPlayerResponse = await SendRequest(`http://${OPENGL_PLAYER_IP}:${OPENGL_PLAYER_PORT}/`);
-      console.log(glPlayerResponse.data);
-      //
-
-
-      //request('http://localhost:8081/', function (error, response, body) {
-      //  console.error('error:', error); // Print the error if one occurred
-      //  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-      //  console.log('body:', body); // Print the HTML for the Google homepage.
-      //});
 
       // Reset counter
       USER_COUNTERS.set(displayName, 0);
