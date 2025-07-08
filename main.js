@@ -127,7 +127,7 @@ else {
       // Send request to OpenGL Server and return its response to client.
       try {
         const glPlayerResponse = await SendRequest(`http://${OPENGL_PLAYER_IP}:${OPENGL_PLAYER_PORT}/`);
-        return res.send(`Data received from opengl-server: ${JSON.stringify(glPlayerResponse.data)}`);
+        //return res.send(`Data received from opengl-server: ${JSON.stringify(glPlayerResponse.data)}`); TODO: Send a response.
       }
       catch (err) {
         console.log(`Failed to get a response from opengl-server. Error: ${err}`);
